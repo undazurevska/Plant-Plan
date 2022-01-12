@@ -1,27 +1,58 @@
-import 'react-native-gesture-handler';
-import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import * as React from 'react';
+import { Text, View, StyleSheet, Image , Arrow, SafeAreaView} from 'react-native';
+import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
+import {LocaleConfig} from 'react-native-calendars';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import COLORS from '../consts/colors';
 
-const Stack = createStackNavigator();
-import HomeScreen from './components/PlantCatalogScreen';
-import DetailsSceeen from './components/PlantProfileScreen';
-import CalendarScreen from './components/CalendarScreen';
-import {StatusBar} from 'react-native';
-import COLORS from './consts/colors';
-
-const App = () => {
+export default function CalendarScreen({navigation, route}) {
+  const {id, title} = route.params;
+  
   return (
-    <NavigationContainer>
-      <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
-      <Stack.Navigator screenOptions={{header: () => null}}>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Details" component={DetailsSceeen} />
-        <Stack.Screen name="Calendar" component={CalendarScreen} options={{title: "Calendar"}}/>
-      </Stack.Navigator>
-    </NavigationContainer>
+     <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: COLORS.white,
+      }}>
+      <View style={style.header}>
+        <Icon name="arrow-back" size={28} onPress={() => navigation.goBack()} />
+      </View>
+      </SafeAreaView>,
+<CalendarList
+theme={{
+    backgroundColor: '#ffffff',
+    calendarBackground: '#F1F1F1',
+    textSectionTitleColor: '#000',
+    todayTextColor: 'green',
+    monthTextColor: '#000',
+  }}
+  onVisibleMonthsChange={(months) => {console.log('now these months are visible', months);}}
+  pastScrollRange={0}
+  futureScrollRange={5}
+  scrollEnabled={true}
+  showScrollIndicator={true}
+  current={new Date()}
+  minDate={'2022-01-01'}
+  maxDate={'2025-05-30'}
+   onDayPress={day => {
+    console.log('day pressed');
+    }}
+       markedDates={{
+    '2022-01-16': {selected: true, marked: true, selectedColor: '#5b7760'},
+    '2022-01-23': {selected: true, marked: true, selectedColor: '#5b7760'},
+    '2022-02-16': {selected: true, marked: true, selectedColor: '#5b7760'},
+    '2022-02-23': {selected: true, marked: true, selectedColor: '#5b7760'},
+    '2022-02-09': {selected: true, marked: true, selectedColor: '#5b7760'}
+  }}
+/>
+
   );
-};
-
-export default App;
-
+}
+const style = StyleSheet.create({
+  header: {
+    paddingHorizontal: 20,
+    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+}) 
